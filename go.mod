@@ -8,3 +8,5 @@ require (
 	golang.org/x/net v0.7.0
 	gopkg.in/yaml.v3 v3.0.0 // indirect
 )
+
+replace github.com/xuri/xgen v0.0.0-20240722131518-d0691b701898 => github.com/YReshetko/xgen v0.0.0-20240722131518-d0691b701898

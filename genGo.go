@@ -104,7 +104,7 @@ func genGoFieldName(name string, unique bool) (fieldName string) {
 		tmp += MakeFirstUpperCase(str)
 	}
 	fieldName = tmp
-	fieldName = strings.Replace(strings.Replace(fieldName, "-", "", -1), "_", "", -1)
+	fieldName = ToPascalCase(fieldName)
 	if unique {
 		fieldNameCount[fieldName]++
 		if count := fieldNameCount[fieldName]; count != 1 {
@@ -122,7 +122,7 @@ func genGoFieldType(name string) string {
 	for _, str := range strings.Split(name, ".") {
 		fieldType += MakeFirstUpperCase(str)
 	}
-	fieldType = strings.Replace(MakeFirstUpperCase(strings.Replace(fieldType, "-", "", -1)), "_", "", -1)
+	fieldType = ToPascalCase(fieldType)
 	if fieldType != "" {
 		return "*" + fieldType
 	}

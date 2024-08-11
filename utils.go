@@ -188,6 +188,24 @@ func MakeFirstUpperCase(s string) string {
 	return ToTitle(s)
 }
 
+func ToPascalCase(s string) string {
+	var buf strings.Builder
+	buf.Grow(utf8.UTFMax * len(s))
+	upper := true
+	for _, ch := range s {
+		if ch == '_' || ch == '-' {
+			upper = true
+			continue
+		}
+		if upper {
+			ch = unicode.ToUpper(ch)
+			upper = false
+		}
+		buf.WriteRune(ch)
+	}
+	return buf.String()
+}
+
 func ToTitle(val string) string {
 	var buf strings.Builder
 	buf.Grow(utf8.UTFMax * len(val))
