@@ -35,11 +35,12 @@ import (
 // Config holds user-defined overrides and filters that are used when
 // generating source code from an XSD document.
 type Config struct {
-	I       string
-	O       string
-	Pkg     string
-	Lang    string
-	Version string
+	I                 string
+	O                 string
+	Pkg               string
+	Lang              string
+	Version           string
+	IgnoreXMLEncoding bool
 }
 
 // Cfg are the default config for xgen. The default package name and output
@@ -66,7 +67,9 @@ func parseFlags() *Config {
 	langPtr := flag.String("l", "", "Specify the language of generated code")
 	verPtr := flag.Bool("v", false, "Show version and exit")
 	helpPtr := flag.Bool("h", false, "Show this help and exit")
+	xmlEncoding := flag.Bool("x", false, "Inject XML encoding (Go language)")
 	flag.Parse()
+	Cfg.IgnoreXMLEncoding = *xmlEncoding
 	if *helpPtr {
 		fmt.Printf("xgen version: %s\r\nCopyright (c) 2020 - 2022 Ri Xu https://xuri.me All rights reserved.\r\n\r\nUsage:\r\n$ xgen [<flag> ...] <XSD file or directory> ...\n  -i <path>\tInput file path or directory for the XML schema definition\r\n  -o <path>\tOutput file path or directory for the generated code\r\n  -p     \tSpecify the package name\r\n  -l      \tSpecify the language of generated code (Go/C/Java/Rust/TypeScript)\r\n  -h     \tOutput this help and exit\r\n  -v     \tOutput version and exit\r\n", Cfg.Version)
 		os.Exit(0)
@@ -112,6 +115,7 @@ func main() {
 			OutputDir:           cfg.O,
 			Lang:                cfg.Lang,
 			Package:             cfg.Pkg,
+			IgnoreXMLEncoding:   cfg.IgnoreXMLEncoding,
 			IncludeMap:          make(map[string]bool),
 			LocalNameNSMap:      make(map[string]string),
 			NSSchemaLocationMap: make(map[string]string),

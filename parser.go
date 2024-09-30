@@ -27,6 +27,7 @@ type Options struct {
 	InputDir            string
 	OutputDir           string
 	Extract             bool
+	IgnoreXMLEncoding   bool
 	Lang                string
 	Package             string
 	IncludeMap          map[string]bool
@@ -137,11 +138,12 @@ func (opt *Options) Parse() (err error) {
 			os.Exit(1)
 		}
 		generator := &CodeGenerator{
-			Lang:      opt.Lang,
-			Package:   opt.Package,
-			File:      path,
-			ProtoTree: opt.ProtoTree,
-			StructAST: map[string]string{},
+			Lang:              opt.Lang,
+			Package:           opt.Package,
+			File:              path,
+			ProtoTree:         opt.ProtoTree,
+			IgnoreEncodingXML: opt.IgnoreXMLEncoding,
+			StructAST:         map[string]string{},
 		}
 		funcName := fmt.Sprintf("Gen%s", MakeFirstUpperCase(opt.Lang))
 		if err = callFuncByName(generator, funcName, []reflect.Value{}); err != nil {
